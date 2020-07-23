@@ -1,5 +1,6 @@
 package com.example.dj.flyingbirds;
 
+import android.media.MediaPlayer;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     static {
         System.loadLibrary("native-lib");
     }
+    MediaPlayer mediaPlayer;
     private Bird bird;
     private Handler handler = new Handler();
     private  final  static  long interVal = 30;
@@ -22,6 +24,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.got);
+        mediaPlayer.start();
+        mediaPlayer.setLooping(true);
 
         bird = new Bird(this);
         setContentView(bird);
@@ -39,6 +45,23 @@ public class MainActivity extends AppCompatActivity {
             }
         },0,interVal);
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mediaPlayer.stop();
+        mediaPlayer.release();
+
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.got);
+        mediaPlayer.start();
+        mediaPlayer.setLooping(true);
     }
 
     /**

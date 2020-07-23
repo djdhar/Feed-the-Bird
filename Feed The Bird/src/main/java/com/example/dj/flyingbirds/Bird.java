@@ -7,6 +7,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Build;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
@@ -30,6 +33,7 @@ public class Bird extends View {
 
     private boolean touch = false;
     private int redEncounter =0;
+    Vibrator vibrator = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);;
     private  int zero=0, one=0, two=0;
     public static String sendPoints ="";
 
@@ -62,6 +66,7 @@ public class Bird extends View {
 
         redPaint.setColor(Color.RED);
         redPaint.setAntiAlias(false);
+
 
         background = BitmapFactory.decodeResource(getResources(),R.drawable.sky);
         life[0] = BitmapFactory.decodeResource(getResources(),R.drawable.green);
@@ -110,6 +115,15 @@ public class Bird extends View {
 
         if(hit(yellowx,yellowy)){
             points=points+10;
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                vibrator.vibrate(VibrationEffect.createOneShot(250, VibrationEffect.DEFAULT_AMPLITUDE));
+            } else {
+                //deprecated in API 26
+                vibrator.vibrate(250);
+            }
+
+
             yellowx = yellowx-200;
         }
 
@@ -126,6 +140,14 @@ public class Bird extends View {
 
         if(hit(greenx,greeny)){
             points=points+25;
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                vibrator.vibrate(VibrationEffect.createOneShot(250, VibrationEffect.DEFAULT_AMPLITUDE));
+            } else {
+                //deprecated in API 26
+                vibrator.vibrate(250);
+            }
+
             greenx = greenx-200;
         }
 
@@ -142,6 +164,13 @@ public class Bird extends View {
         redx=redx-redSpeed;
 
         if(hit(redx,redy)){
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                vibrator.vibrate(VibrationEffect.createOneShot(250, VibrationEffect.DEFAULT_AMPLITUDE));
+            } else {
+                //deprecated in API 26
+                vibrator.vibrate(250);
+            }
 
             if(redEncounter==0){
                 canvas.drawBitmap(life[1],canvasW-300,10,null); zero=zero+1;
